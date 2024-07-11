@@ -12,25 +12,29 @@ const schemaPath = join(__dirname, "schema.graphql");
 const typeDefs = readFileSync(schemaPath, "utf-8");
 
 const resolvers: Resolvers = {
-    Query: {
-        authors() {
-            return database.getAuthors();
-        },
-        author(_, args) {
-            return database.getAuthorById(args.id);
-        },
-        books() {
-            return database.getBooks();
-        },
-        book(_, args) {
-            return database.getBookById(args.id);
-        },
-    },
-    Author: {
-        books(author) {
-            return database.getBooksByAuthorId(author.id!);
-        },
-    },
+	Query: {
+		authors() {
+			return database.getAuthors();
+		},
+		author(_, args) {
+			return database.getAuthorById(args.id);
+		},
+		books() {
+			return database.getBooks();
+		},
+		book(_, args) {
+			return database.getBookById(args.id);
+		},
+	},
+	Author: {
+		books(author) {
+			const { id } = author;
+			if (id === undefined) {
+				throw new Error("author.id is undefined");
+			}
+			return database.getBooksByAuthorId(id);
+		},
+	},
 };
 
 const schema = createSchema({ typeDefs, resolvers });
