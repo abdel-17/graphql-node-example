@@ -2,6 +2,7 @@
     "name": "graphql-node-example",
     "private": true,
     "scripts": {
+        "codegen": "graphql-codegen",
         "start": "tsx ./src/index.ts"
     },
     "dependencies": {
@@ -12,7 +13,7 @@
         "@graphql-codegen/cli": "^5.0.2",
         "@graphql-codegen/typescript": "^4.0.9",
         "@graphql-codegen/typescript-resolvers": "^4.2.1",
-        "@tsconfig/node22": "^22.0.0",
+        "@tsconfig/node20": "^20.1.4",
         "@types/node": "^20.14.10",
         "tsx": "^4.16.2",
         "typescript": "^5.5.3"
