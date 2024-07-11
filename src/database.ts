@@ -1,56 +1,54 @@
-export type Author = {
-    id: number;
-    name: string;
-};
+import SQLiteDatabase from "better-sqlite3";
+import { Kysely, SqliteDialect } from "kysely";
+import { DB } from "./database.types";
 
-export type Book = {
-    id: number;
-    title: string;
-    author_id: number;
-};
+export class Database {
+    #database: Kysely<DB>;
 
-const authors: Author[] = [
-    {
-        id: 1,
-        name: "F. Scott Fitzgerald",
-    },
-    {
-        id: 2,
-        name: "J.D. Salinger",
-    },
-];
+    constructor(filename: string) {
+        const database = new SQLiteDatabase(filename);
 
-const books: Book[] = [
-    {
-        id: 1,
-        title: "The Great Gatsby",
-        author_id: 1,
-    },
-    {
-        id: 2,
-        title: "The Catcher in the Rye",
-        author_id: 2,
-    },
-];
+        // Enable WAL mode for better performance
+        database.pragma("journal_mode = WAL");
 
-export function getAuthors(): Author[] {
-    return authors;
-}
+        this.#database = new Kysely<DB>({
+            dialect: new SqliteDialect({ database }),
+        });
+    }
 
-export function getAuthorById(id: number): Author | null {
-    const author = authors.find((author) => author.id === id);
-    return author ?? null;
-}
+    getAuthors() {
+        return this.#database.selectFrom("authors").selectAll().execute();
+    }
 
-export function getBooks(): Book[] {
-    return books;
-}
+    async getAuthorById(id: number) {
+        const author = await this.#database
+            .selectFrom("authors")
+            .selectAll()
+            .where("id", "=", id)
+            .executeTakeFirst();
 
-export function getBookById(id: number): Book | null {
-    const book = books.find((book) => book.id === id);
-    return book ?? null;
-}
+        return author ?? null;
+    }
 
-export function getBooksByAuthorId(id: number): Book[] {
-    return books.filter((book) => book.author_id === id);
+    getBooks() {
+        return this.#database.selectFrom("books").selectAll().execute();
+    }
+
+    async getBookById(id: number) {
+        const book = await this.#database
+            .selectFrom("books")
+            .selectAll()
+            .where("id", "=", id)
+            .executeTakeFirst();
+
+        return book ?? null;
+    }
+
+    getBooksByAuthorId(authorId: number) {
+        return this.#database
+            .selectFrom("books")
+            .selectAll()
+            .where("author_id", "=", authorId)
+            .execute();
+    }
 }

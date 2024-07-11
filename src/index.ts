@@ -2,8 +2,11 @@ import { readFileSync } from "node:fs";
 import { createServer } from "node:http";
 import { join } from "node:path";
 import { createSchema, createYoga } from "graphql-yoga";
-import * as database from "./database";
+import { Database } from "./database";
 import type { Resolvers } from "./schema.types";
+
+const databasePath = join(__dirname, "database.db");
+const database = new Database(databasePath);
 
 const schemaPath = join(__dirname, "schema.graphql");
 const typeDefs = readFileSync(schemaPath, "utf-8");
