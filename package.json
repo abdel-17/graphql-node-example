@@ -4,10 +4,10 @@
 	"scripts": {
 		"check": "biome check",
 		"check:fix": "biome check --write",
-		"db:init": "touch ./src/database.db && cat ./migrations/*.sql | sqlite3 ./src/database.db",
-		"db:generate": "kysely-codegen --url ./src/database.db --out-file ./src/database.types.ts",
+		"db:generate": "kysely-codegen --url database/database.db --out-file src/database.types.ts",
+		"db:init": "mkdir database && touch database/database.db && cat migrations/*.sql | sqlite3 database/database.db",
 		"gql:generate": "graphql-codegen",
-		"start": "tsx ./src/index.ts"
+		"start": "tsx src/index.ts"
 	},
 	"dependencies": {
 		"better-sqlite3": "^11.1.2",

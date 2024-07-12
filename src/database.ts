@@ -3,7 +3,7 @@ import { Kysely, SqliteDialect } from "kysely";
 import type { DB } from "./database.types";
 
 export class Database {
-	#database: Kysely<DB>;
+	readonly #database: Kysely<DB>;
 
 	constructor(filename: string) {
 		const database = new SQLiteDatabase(filename);

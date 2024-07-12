@@ -5,7 +5,7 @@ import { createSchema, createYoga } from "graphql-yoga";
 import { Database } from "./database";
 import type { Resolvers } from "./schema.types";
 
-const databasePath = join(__dirname, "database.db");
+const databasePath = join(__dirname, "..", "database", "database.db");
 const database = new Database(databasePath);
 
 const schemaPath = join(__dirname, "schema.graphql");
