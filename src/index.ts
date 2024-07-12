@@ -4,6 +4,7 @@ import { join } from "node:path";
 import { createSchema, createYoga } from "graphql-yoga";
 import { Database } from "./database";
 import type { Resolvers } from "./schema.types";
+import { assert } from "./utils";
 
 const databasePath = join(__dirname, "..", "database", "database.db");
 const database = new Database(databasePath);
@@ -29,10 +30,22 @@ const resolvers: Resolvers = {
 	Author: {
 		books(author) {
 			const { id } = author;
-			if (id === undefined) {
-				throw new Error("author.id is undefined");
-			}
+			assert(id !== undefined, "id is undefined");
 			return database.getBooksByAuthorId(id);
+		},
+	},
+	Mutation: {
+		insertAuthor(_, args) {
+			return database.insertAuthor(args.name);
+		},
+		deleteAuthor(_, args) {
+			return database.deleteAuthorById(args.id);
+		},
+		insertBook(_, args) {
+			return database.insertBook(args.title, args.authorId);
+		},
+		deleteBook(_, args) {
+			return database.deleteBookById(args.id);
 		},
 	},
 };

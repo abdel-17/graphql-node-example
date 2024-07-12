@@ -44,6 +44,41 @@ export type Book = {
 	title: Scalars["String"]["output"];
 };
 
+export type DeletionResult = {
+	__typename?: "DeletionResult";
+	exists: Scalars["Boolean"]["output"];
+};
+
+export type InsertionResult = {
+	__typename?: "InsertionResult";
+	id: Scalars["Int"]["output"];
+};
+
+export type Mutation = {
+	__typename?: "Mutation";
+	deleteAuthor: DeletionResult;
+	deleteBook: DeletionResult;
+	insertAuthor: InsertionResult;
+	insertBook: InsertionResult;
+};
+
+export type MutationDeleteAuthorArgs = {
+	id: Scalars["Int"]["input"];
+};
+
+export type MutationDeleteBookArgs = {
+	id: Scalars["Int"]["input"];
+};
+
+export type MutationInsertAuthorArgs = {
+	name: Scalars["String"]["input"];
+};
+
+export type MutationInsertBookArgs = {
+	authorId: Scalars["Int"]["input"];
+	title: Scalars["String"]["input"];
+};
+
 export type Query = {
 	__typename?: "Query";
 	author?: Maybe<Author>;
@@ -170,7 +205,10 @@ export type ResolversTypes = {
 	Author: ResolverTypeWrapper<Partial<Author>>;
 	Book: ResolverTypeWrapper<Partial<Book>>;
 	Boolean: ResolverTypeWrapper<Partial<Scalars["Boolean"]["output"]>>;
+	DeletionResult: ResolverTypeWrapper<Partial<DeletionResult>>;
+	InsertionResult: ResolverTypeWrapper<Partial<InsertionResult>>;
 	Int: ResolverTypeWrapper<Partial<Scalars["Int"]["output"]>>;
+	Mutation: ResolverTypeWrapper<{}>;
 	Query: ResolverTypeWrapper<{}>;
 	String: ResolverTypeWrapper<Partial<Scalars["String"]["output"]>>;
 };
@@ -180,7 +218,10 @@ export type ResolversParentTypes = {
 	Author: Partial<Author>;
 	Book: Partial<Book>;
 	Boolean: Partial<Scalars["Boolean"]["output"]>;
+	DeletionResult: Partial<DeletionResult>;
+	InsertionResult: Partial<InsertionResult>;
 	Int: Partial<Scalars["Int"]["output"]>;
+	Mutation: {};
 	Query: {};
 	String: Partial<Scalars["String"]["output"]>;
 };
@@ -204,6 +245,55 @@ export type BookResolvers<
 	id?: Resolver<ResolversTypes["Int"], ParentType, ContextType>;
 	title?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
 	__isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type DeletionResultResolvers<
+	ContextType = any,
+	ParentType extends
+		ResolversParentTypes["DeletionResult"] = ResolversParentTypes["DeletionResult"],
+> = {
+	exists?: Resolver<ResolversTypes["Boolean"], ParentType, ContextType>;
+	__isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type InsertionResultResolvers<
+	ContextType = any,
+	ParentType extends
+		ResolversParentTypes["InsertionResult"] = ResolversParentTypes["InsertionResult"],
+> = {
+	id?: Resolver<ResolversTypes["Int"], ParentType, ContextType>;
+	__isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type MutationResolvers<
+	ContextType = any,
+	ParentType extends
+		ResolversParentTypes["Mutation"] = ResolversParentTypes["Mutation"],
+> = {
+	deleteAuthor?: Resolver<
+		ResolversTypes["DeletionResult"],
+		ParentType,
+		ContextType,
+		RequireFields<MutationDeleteAuthorArgs, "id">
+	>;
+	deleteBook?: Resolver<
+		ResolversTypes["DeletionResult"],
+		ParentType,
+		ContextType,
+		RequireFields<MutationDeleteBookArgs, "id">
+	>;
+	insertAuthor?: Resolver<
+		ResolversTypes["InsertionResult"],
+		ParentType,
+		ContextType,
+		RequireFields<MutationInsertAuthorArgs, "name">
+	>;
+	insertBook?: Resolver<
+		ResolversTypes["InsertionResult"],
+		ParentType,
+		ContextType,
+		RequireFields<MutationInsertBookArgs, "authorId" | "title">
+	>;
 };
 
 export type QueryResolvers<
@@ -230,5 +320,8 @@ export type QueryResolvers<
 export type Resolvers<ContextType = any> = {
 	Author?: AuthorResolvers<ContextType>;
 	Book?: BookResolvers<ContextType>;
+	DeletionResult?: DeletionResultResolvers<ContextType>;
+	InsertionResult?: InsertionResultResolvers<ContextType>;
+	Mutation?: MutationResolvers<ContextType>;
 	Query?: QueryResolvers<ContextType>;
 };
