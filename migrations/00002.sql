@@ -1,10 +1,10 @@
-INSERT INTO authors(name)
+INSERT INTO authors (name)
 VALUES
     ('J.K. Rowling'),
     ('J.R.R. Tolkien'),
     ('George R.R. Martin');
 
-INSERT INTO books(title, author_id)
+INSERT INTO books (title, author_id)
 VALUES
     ('Harry Potter and the Philosopher''s Stone', 1),
     ('Harry Potter and the Chamber of Secrets', 1),
